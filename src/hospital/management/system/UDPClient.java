@@ -11,7 +11,9 @@ import org.json.JSONObject;
 
 public class UDPClient {
 
-    public static String server_address = "192.168.43.66";
+    public static String server_address = environment.server_address;
+    public static int port = environment.port;
+    
     String fname, lname, address, phone, ID, DOB, gender;
 
     public UDPClient() {
@@ -54,14 +56,15 @@ public class UDPClient {
             Arrays.fill(send_Data, (byte) 0);
             send_Data = clientString.getBytes();
 
-            DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, 81);
+            DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, port);
             clientSocket.send(sendPacket);
-
+/*
             DatagramPacket receivePacket = new DatagramPacket(receive_Data, receive_Data.length);
             clientSocket.receive(receivePacket);
             String serverResponse = new String(receivePacket.getData());
 
             System.out.print("RESPONSE FROM SERVER: " + serverResponse);
+*/
             clientSocket.close();
         } catch (IOException e) {
             System.out.println(e.toString());

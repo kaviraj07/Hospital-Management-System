@@ -29,8 +29,9 @@ import org.json.simple.parser.JSONParser;
 public class client_doctor {
 
     public String server_address = environment.server_address;
-    public int port = 81;
-    public int listening_port = 82;
+    public int port = environment.port;
+    public int listening_port = environment.listening_port;
+    
     public String doctor_id = "2";
     public JTable patientsTbl;
 

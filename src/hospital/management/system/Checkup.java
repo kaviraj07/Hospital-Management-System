@@ -34,7 +34,7 @@ public class Checkup extends javax.swing.JFrame {
      * Creates new form Checkup
      */
     public static void createcheck_up() throws JSONException, ParseException {
-        //String server_address = "130.61.44.133";
+        
         String server_address = server_add;
                 
 

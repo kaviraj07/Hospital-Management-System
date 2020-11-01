@@ -8,10 +8,16 @@ package hospital.management.system;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,7 +30,7 @@ public class myPatients extends javax.swing.JFrame {
      * Creates new form myPatients
      */
     DefaultTableModel model;
-  
+
     public client_doctor doc1;
 
     public myPatients() throws IOException {
@@ -33,7 +39,6 @@ public class myPatients extends javax.swing.JFrame {
         //this will set the frame to maximised size
         this.setExtendedState(this.getExtendedState() | myPatients.MAXIMIZED_BOTH);
 
-       
         client_doctor doc = new client_doctor(patientsTbl);
         doc1 = doc;
 
@@ -42,10 +47,11 @@ public class myPatients extends javax.swing.JFrame {
 
         //table properties
         patientsTbl.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 24));
-        patientsTbl.getTableHeader().setOpaque(true);
+        patientsTbl.getTableHeader().setOpaque(false);
         patientsTbl.getTableHeader().setBackground(new Color(0, 51, 153));
         patientsTbl.getTableHeader().setForeground(new Color(0, 51, 153));
-        
+        patientsTbl.setBackground(new Color(0, 51, 153, 180));
+
         //to be used when clien and server on same network - FOR REALTIME UPDATES
         doc1.rt_updater();
 
@@ -65,13 +71,19 @@ public class myPatients extends javax.swing.JFrame {
         patientsMenu = new javax.swing.JPanel();
         buttonsPanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
-        homeLbl = new javax.swing.JLabel();
+        logLbl = new javax.swing.JLabel();
         refreshPanel = new javax.swing.JPanel();
         refreshLbl = new javax.swing.JLabel();
         middlePanel = new javax.swing.JPanel();
         logoPanel = new javax.swing.JPanel();
         logoLbl = new javax.swing.JLabel();
-        mainPatientsPanel = new javax.swing.JPanel();
+        mainPatientsPanel = new JPanel() {  
+            public void paintComponent(Graphics g) {  
+                Image img = Toolkit.getDefaultToolkit().getImage(  
+                    myPatients.class.getResource("/Picture_icon/checkupbg.jpg"));  
+                g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);  
+            }  
+        };
         titleLbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         patientsTbl = new javax.swing.JTable();
@@ -88,7 +100,7 @@ public class myPatients extends javax.swing.JFrame {
         buttonsPanel.setBackground(new java.awt.Color(0, 51, 153));
 
         homePanel.setBackground(new java.awt.Color(0, 51, 153));
-        homePanel.setPreferredSize(new java.awt.Dimension(100, 72));
+        homePanel.setPreferredSize(new java.awt.Dimension(150, 72));
         homePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 homePanelMouseEntered(evt);
@@ -97,40 +109,31 @@ public class myPatients extends javax.swing.JFrame {
                 homePanelMouseExited(evt);
             }
         });
+        homePanel.setLayout(new java.awt.BorderLayout());
 
-        homeLbl.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        homeLbl.setForeground(new java.awt.Color(255, 255, 255));
-        homeLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        homeLbl.setText("Home");
-        homeLbl.setAlignmentX(0.5F);
-        homeLbl.addMouseListener(new java.awt.event.MouseAdapter() {
+        logLbl.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        logLbl.setForeground(new java.awt.Color(255, 255, 255));
+        logLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logLbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/log.png"))); // NOI18N
+        logLbl.setText("Log Out");
+        logLbl.setAlignmentX(0.5F);
+        logLbl.setMaximumSize(new java.awt.Dimension(500, 32));
+        logLbl.setPreferredSize(new java.awt.Dimension(200, 32));
+        logLbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logLblMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                homeLblMouseEntered(evt);
+                logLblMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                homeLblMouseExited(evt);
+                logLblMouseExited(evt);
             }
         });
-
-        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
-        homePanel.setLayout(homePanelLayout);
-        homePanelLayout.setHorizontalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(homeLbl)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        homePanelLayout.setVerticalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(homeLbl)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        homePanel.add(logLbl, java.awt.BorderLayout.CENTER);
 
         refreshPanel.setBackground(new java.awt.Color(0, 51, 153));
-        refreshPanel.setPreferredSize(new java.awt.Dimension(105, 72));
+        refreshPanel.setPreferredSize(new java.awt.Dimension(150, 72));
         refreshPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 refreshPanelMouseEntered(evt);
@@ -139,10 +142,12 @@ public class myPatients extends javax.swing.JFrame {
                 refreshPanelMouseExited(evt);
             }
         });
+        refreshPanel.setLayout(new java.awt.BorderLayout());
 
-        refreshLbl.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        refreshLbl.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         refreshLbl.setForeground(new java.awt.Color(255, 255, 255));
         refreshLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        refreshLbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresg.png"))); // NOI18N
         refreshLbl.setText("Refresh");
         refreshLbl.setToolTipText("");
         refreshLbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -156,23 +161,7 @@ public class myPatients extends javax.swing.JFrame {
                 refreshLblMouseExited(evt);
             }
         });
-
-        javax.swing.GroupLayout refreshPanelLayout = new javax.swing.GroupLayout(refreshPanel);
-        refreshPanel.setLayout(refreshPanelLayout);
-        refreshPanelLayout.setHorizontalGroup(
-            refreshPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(refreshPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(refreshLbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        refreshPanelLayout.setVerticalGroup(
-            refreshPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(refreshPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(refreshLbl)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        refreshPanel.add(refreshLbl, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout buttonsPanelLayout = new javax.swing.GroupLayout(buttonsPanel);
         buttonsPanel.setLayout(buttonsPanelLayout);
@@ -240,17 +229,23 @@ public class myPatients extends javax.swing.JFrame {
         mainPatientsPanel.setBackground(new java.awt.Color(255, 255, 255));
         mainPatientsPanel.setLayout(new javax.swing.BoxLayout(mainPatientsPanel, javax.swing.BoxLayout.Y_AXIS));
 
+        titleLbl.setBackground(new java.awt.Color(255, 255, 255));
         titleLbl.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         titleLbl.setForeground(new java.awt.Color(0, 51, 153));
         titleLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLbl.setText("My Patients");
+        titleLbl.setAlignmentX(0.5F);
         titleLbl.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        titleLbl.setMaximumSize(new java.awt.Dimension(2743, 47));
-        titleLbl.setMinimumSize(new java.awt.Dimension(1794, 47));
-        titleLbl.setPreferredSize(new java.awt.Dimension(2743, 100));
+        titleLbl.setMaximumSize(new java.awt.Dimension(300, 47));
+        titleLbl.setMinimumSize(new java.awt.Dimension(100, 47));
+        titleLbl.setOpaque(true);
+        titleLbl.setPreferredSize(new java.awt.Dimension(300, 100));
+        titleLbl.setRequestFocusEnabled(false);
         mainPatientsPanel.add(titleLbl);
 
+        patientsTbl.setBackground(new java.awt.Color(255, 255, 255));
         patientsTbl.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        patientsTbl.setForeground(new java.awt.Color(255, 255, 255));
         patientsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -282,9 +277,12 @@ public class myPatients extends javax.swing.JFrame {
             }
         });
         patientsTbl.setFocusable(false);
+        patientsTbl.setPreferredSize(new java.awt.Dimension(200, 750));
         patientsTbl.setRowHeight(50);
         patientsTbl.setRowMargin(0);
-        patientsTbl.setSelectionBackground(new java.awt.Color(0, 51, 153));
+        patientsTbl.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        patientsTbl.setSelectionForeground(new java.awt.Color(0, 51, 153));
+        patientsTbl.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         patientsTbl.setShowHorizontalLines(false);
         patientsTbl.setShowVerticalLines(false);
         patientsTbl.getTableHeader().setReorderingAllowed(false);
@@ -295,14 +293,30 @@ public class myPatients extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(patientsTbl);
 
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
+
         mainPatientsPanel.add(jScrollPane1);
 
+        editPanel.setBackground(new java.awt.Color(255, 255, 255));
+        editPanel.setOpaque(false);
         editPanel.setPreferredSize(new java.awt.Dimension(1899, 40));
+        editPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
-        editBtn.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        editBtn.setBackground(new java.awt.Color(0, 51, 153));
+        editBtn.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        editBtn.setForeground(new java.awt.Color(255, 255, 255));
+        editBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/edit.png"))); // NOI18N
         editBtn.setText("Edit Diagnosis");
         editBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        editBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        editBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                editBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBtnMouseExited(evt);
+            }
+        });
         editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editBtnActionPerformed(evt);
@@ -345,27 +359,27 @@ public class myPatients extends javax.swing.JFrame {
     private void homePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homePanelMouseEntered
         // TODO add your handling code here:
         homePanel.setBackground(Color.white);
-        homeLbl.setForeground(new Color(0, 51, 153));
+        logLbl.setForeground(new Color(0, 51, 153));
 
     }//GEN-LAST:event_homePanelMouseEntered
 
     private void homePanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homePanelMouseExited
         // TODO add your handling code here:
         homePanel.setBackground(new Color(0, 51, 153));
-        homeLbl.setForeground(Color.white);
+        logLbl.setForeground(Color.white);
     }//GEN-LAST:event_homePanelMouseExited
 
-    private void homeLblMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeLblMouseEntered
+    private void logLblMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logLblMouseEntered
         // TODO add your handling code here:
         homePanel.setBackground(Color.white);
-        homeLbl.setForeground(new Color(0, 51, 153));
-    }//GEN-LAST:event_homeLblMouseEntered
+        logLbl.setForeground(new Color(0, 51, 153));
+    }//GEN-LAST:event_logLblMouseEntered
 
-    private void homeLblMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeLblMouseExited
+    private void logLblMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logLblMouseExited
         // TODO add your handling code here:
         homePanel.setBackground(new Color(0, 51, 153));
-        homeLbl.setForeground(Color.white);
-    }//GEN-LAST:event_homeLblMouseExited
+        logLbl.setForeground(Color.white);
+    }//GEN-LAST:event_logLblMouseExited
 
     private void refreshLblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshLblMouseClicked
         try {
@@ -388,15 +402,40 @@ public class myPatients extends javax.swing.JFrame {
         // TODO add your handling code here:
         int row = patientsTbl.getSelectedRow();
 
-        String idval = patientsTbl.getModel().getValueAt(row, 0).toString();
-        String dateval = patientsTbl.getModel().getValueAt(row, 1).toString();
-        String snameval = patientsTbl.getModel().getValueAt(row, 2).toString();
-        String nameval = patientsTbl.getModel().getValueAt(row, 3).toString();
-        String reasonval = patientsTbl.getModel().getValueAt(row, 4).toString();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row first!");
+        } else {
+            String idval = patientsTbl.getModel().getValueAt(row, 0).toString();
+            String dateval = patientsTbl.getModel().getValueAt(row, 1).toString();
+            String snameval = patientsTbl.getModel().getValueAt(row, 2).toString();
+            String nameval = patientsTbl.getModel().getValueAt(row, 3).toString();
+            String reasonval = patientsTbl.getModel().getValueAt(row, 4).toString();
 
-        diagnosticScreen ds = new diagnosticScreen(nameval, snameval, reasonval, dateval, idval);
-        ds.setVisible(true);
+            diagnosticScreen ds = new diagnosticScreen(nameval, snameval, reasonval, dateval, idval);
+            ds.setVisible(true);
+
+        }
+
     }//GEN-LAST:event_editBtnActionPerformed
+
+    private void editBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMouseEntered
+        // TODO add your handling code here:
+        editBtn.setBackground(Color.white);
+        editBtn.setForeground(new Color(0, 51, 153));
+    }//GEN-LAST:event_editBtnMouseEntered
+
+    private void editBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMouseExited
+        // TODO add your handling code here:
+        editBtn.setBackground(new Color(0, 51, 153));
+        editBtn.setForeground(Color.white);
+    }//GEN-LAST:event_editBtnMouseExited
+
+    private void logLblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logLblMouseClicked
+        // TODO add your handling code here:
+        Login log = new Login();
+        log.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logLblMouseClicked
 
     /**
      * @param args the command line arguments
@@ -441,9 +480,9 @@ public class myPatients extends javax.swing.JFrame {
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton editBtn;
     private javax.swing.JPanel editPanel;
-    private javax.swing.JLabel homeLbl;
     private javax.swing.JPanel homePanel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel logLbl;
     private javax.swing.JLabel logoLbl;
     private javax.swing.JPanel logoPanel;
     private javax.swing.JPanel mainPatientsPanel;

@@ -32,8 +32,8 @@ public class save_diagnostic {
 
     
     public String server_address = environment.server_address;
+    public int port = environment.port;
     
-    public int port = 81;
     public String cid = "";
 
     //constructor
@@ -114,13 +114,13 @@ public class save_diagnostic {
                     deptId = "1";
                     break;
                 case "X-Ray":
-                    deptId = "2";
+                    deptId = "1";
                     break;
                 case "ICU":
-                    deptId = "3";
+                    deptId = "1";
                     break;
                 case "MRI":
-                    deptId = "4";
+                    deptId = "1";
                     break;
 
             }

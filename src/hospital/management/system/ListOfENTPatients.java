@@ -29,7 +29,10 @@ import org.json.simple.parser.ParseException;
 public class ListOfENTPatients extends javax.swing.JFrame {
 
     public String server_address = environment.server_address;
-
+    public int port = environment.port;
+    public int lport = environment.ent_port;
+    
+    
     String patientID;
     String specialTreatmentID;
     DatagramSocket clientSocket;
@@ -88,7 +91,7 @@ public class ListOfENTPatients extends javax.swing.JFrame {
         send_Data = requestString.getBytes();
 
         //sending packet
-        DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, 81);
+        DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, port);
         clientSocket.send(sendPacket);
 
         clientSocket.close();
@@ -96,7 +99,7 @@ public class ListOfENTPatients extends javax.swing.JFrame {
 
     public void getPatients() {
         try {
-            clientSocket = new DatagramSocket(81);
+            clientSocket = new DatagramSocket();
             IPAddress = InetAddress.getByName(server_address);
 
             DefaultTableModel model = (DefaultTableModel) patient_table.getModel();
@@ -124,7 +127,7 @@ public class ListOfENTPatients extends javax.swing.JFrame {
             send_Data = requestString.getBytes();
 
             //sending packet
-            DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, 81);
+            DatagramPacket sendPacket = new DatagramPacket(send_Data, send_Data.length, IPAddress, port);
             clientSocket.send(sendPacket);
 
             //receiving packet
@@ -164,7 +167,7 @@ public class ListOfENTPatients extends javax.swing.JFrame {
 
     public void getNewPatients() throws IOException, JSONException {
 
-        DatagramSocket serverSocket2 = new DatagramSocket(83);
+        DatagramSocket serverSocket2 = new DatagramSocket(lport);
         byte[] receiveData2 = new byte[1024];
 
         DatagramPacket packet2 = new DatagramPacket(receiveData2, receiveData2.length);
@@ -306,8 +309,8 @@ public class ListOfENTPatients extends javax.swing.JFrame {
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_btnActionPerformed
         // TODO add your handling code here:
-        setVisible(false); //you can't see me!
-        dispose();
+        //setVisible(false); //you can't see me!
+        this.dispose();
 
     }//GEN-LAST:event_cancel_btnActionPerformed
 

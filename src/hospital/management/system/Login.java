@@ -34,6 +34,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         loginpanel.setBackground(new Color(0, 51, 153, 180));
         loginbtn.setBackground(new Color(255, 255, 255, 180));
+        this.getRootPane().setDefaultButton(loginbtn);
     }
 
     /**
@@ -66,7 +67,8 @@ public class Login extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Username:");
+        jLabel2.setText("Email:");
+        jLabel2.setToolTipText("");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
